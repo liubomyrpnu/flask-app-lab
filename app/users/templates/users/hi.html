@@ -1,0 +1,16 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class='row'>
+  <div class='col-md-3'>
+    <!-- вертикальне меню тільки для users -->
+    <ul class='nav flex-column'>
+      <li class='nav-item'><a class='nav-link' href='{{ url_for('users.greetings', name='John') }}'>Greet John</a></li>
+      <li class='nav-item'><a class='nav-link' href='{{ url_for('users.admin') }}'>Admin</a></li>
+    </ul>
+  </div>
+  <div class='col-md-9'>
+    <h2>Hi, {{ name }}</h2>
+    <p>Age: {{ age }}</p>
+  </div>
+</div>
+{% endblock %}
