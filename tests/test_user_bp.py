@@ -8,7 +8,6 @@ class FlaskAppTestCase(unittest.TestCase):
         self.client = app.test_client()
 
     def test_greetings_page(self):
-        # враховуємо префікс /users
         response = self.client.get('/users/hi/John?age=30')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'JOHN', response.data)
