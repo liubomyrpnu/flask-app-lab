@@ -9,9 +9,12 @@
 
     {{ render_field(form.name) }}
     {{ render_field(form.email) }}
+    {{ render_field(form.phone) }}
+    {{ render_field(form.subject) }}
     {{ render_field(form.message) }}
 
     {{ form.submit(class="btn btn-primary") }}
 </form>
+
 
 {% endblock %}
