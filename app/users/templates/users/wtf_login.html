@@ -1,0 +1,31 @@
+﻿{% extends 'base.html' %}
+{% from 'macros/form.html' import render_field %}
+
+{% block content %}
+<h2>Login (WTF)</h2>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+
+    <div class="form-check mb-3">
+        {{ form.remember(class="form-check-input") }}
+        {{ form.remember.label(class="form-check-label") }}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% if table_data %}
+<hr>
+<h3>Submitted data:</h3>
+<table class="table table-bordered">
+    <tr><th>Username</th><td>{{ table_data.username }}</td></tr>
+    <tr><th>Password</th><td>{{ table_data.password }}</td></tr>
+    <tr><th>Remember me</th><td>{{ table_data.remember }}</td></tr>
+</table>
+{% endif %}
+
+{% endblock %}

@@ -89,3 +89,54 @@ def theme(mode):
     else:
         flash('Невірна тема', 'danger')
     return resp
+
+from app.forms import LoginForm
+
+@users_bp.route('/wtf-login', methods=['GET', 'POST'])
+def wtf_login():
+    form = LoginForm()
+
+    table_data = None  
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        remember = form.remember.data
+
+        if username == "student" and password == "1234":
+            session['user'] = username
+            session['remember'] = remember
+            flash("Login successful!", "success")
+
+            table_data = {
+                "username": username,
+                "password": password,
+                "remember": remember
+            }
+
+            return render_template(
+                'users/wtf_login.html',
+                form=form,
+                table_data=table_data
+            )
+
+        flash("Incorrect username or password", "danger")
+        return redirect(url_for('users.wtf_login'))  
+
+    return render_template(
+        'users/wtf_login.html',
+        form=form
+    )
+
+
+@users_bp.route('/wtf-profile')
+def wtf_profile():
+    if 'user' not in session:
+        flash("Please log in first", "warning")
+        return redirect(url_for('users.wtf_login'))
+
+    return render_template(
+        'users/wtf_profile.html',
+        user=session.get('user'),
+        remember=session.get('remember')
+    )

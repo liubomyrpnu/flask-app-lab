@@ -1,4 +1,5 @@
-﻿from flask import Blueprint, render_template, request, url_for
+﻿from flask import Blueprint, render_template, request, redirect, url_for, flash
+from app.forms import ContactForm
 
 main_bp = Blueprint('main', __name__)
 
@@ -22,9 +23,26 @@ def index():
 def resume():
     return render_template('resume.html', title='Resume', profile=default_profile())
 
-@main_bp.route('/contacts', methods=['GET','POST'])
+@main_bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
-    sent = False
-    if request.method == 'POST':
-        sent = True
-    return render_template('contacts.html', title='Contacts', sent=sent)
+    form = ContactForm()
+    
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        message = form.message.data
+
+        with open("contact.log", "a", encoding="utf-8") as f:
+            f.write(f"{name} | {email} | {message}\n")
+
+        flash("Message sent successfully!", "success")
+        return redirect(url_for('main.contacts'))  
+
+    if form.errors:
+        flash("Form contains errors", "danger")
+
+    return render_template(
+        'contacts.html',
+        title="Contacts",
+        form=form
+    )
