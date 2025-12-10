@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Усі пости</h1>
+    <a href="{{ url_for('posts.create') }}" class="btn btn-success mb-3">Створити новий пост</a>
+    {% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>{{ post.title }}</h5>
+            <p>{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+            <small>{{ post.category }} • {{ post.posted.strftime('%d.%m.%Y %H:%M') }}</small>
+            <div class="mt-2">
+                <a href="{{ url_for('posts.detail', id=post.id) }}" class="btn btn-primary btn-sm">Читати</a>
+                <a href="{{ url_for('posts.update', id=post.id) }}" class="btn btn-warning btn-sm">Редагувати</a>
+        <form action="{{ url_for('posts.delete', id=post.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger btn-sm"
+            onclick="return confirm('Дійсно видалити пост?')">Видалити</button>
+        </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Поки немає постів. <a href="{{ url_for('posts.create') }}">Створіть перший!</a></p>
+    {% endfor %}
+</div>
+{% endblock %}
